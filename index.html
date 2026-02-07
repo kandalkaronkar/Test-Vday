@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Be My Valentine?</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <main class="wrap">
+    <section class="card" aria-label="Valentine prompt">
+
+      <!-- SCREEN 1: QUESTION -->
+      <div id="screenQuestion">
+        <div class="emoji" aria-hidden="true">😺💘</div>
+
+        <h1 id="question">surbhi will you be my valentine?</h1>
+
+        <div class="buttons" id="buttonArea" aria-label="Answer buttons">
+          <button id="yesBtn" class="btn yes" type="button">Yes</button>
+          <button id="noBtn" class="btn no" type="button">No</button>
+        </div>
+
+        <p class="tiny" id="tinyText">No seems a little bit shy 👿</p>
+      </div>
+
+      <!-- SCREEN 2: YAAY + GIF + CLAIM -->
+      <div id="screenYay" class="screen" hidden>
+        <div class="emoji" aria-hidden="true">🎉💖</div>
+        <h1>YAAY!</h1>
+
+        <!-- Upload mindblown.gif to the repo root -->
+        <img class="media" src="mindblown.gif" alt="Mind blown gif" />
+
+        <button id="claimBtn" class="btn yes big" type="button">Claim rose 🌹</button>
+      </div>
+
+      <!-- SCREEN 3: ROSES IMAGE -->
+      <div id="screenRoses" class="screen" hidden>
+        <div class="emoji" aria-hidden="true">🌹🌹🌹</div>
+        <h1>For you 💗</h1>
+
+        <!-- Upload roses.jpg to the repo root -->
+        <img class="media" src="roses.jpg" alt="A bouquet of roses" />
+      </div>
+
+    </section>
+
+    <footer class="footer">
+      <span class="hint">Open on iPhone / Android / Laptop — works everywhere 💘</span>
+    </footer>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
