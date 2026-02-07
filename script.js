@@ -1,15 +1,16 @@
-// -------------------- Setup --------------------
+// -------------------- Elements --------------------
 const area = document.getElementById("buttonArea");
 const noBtn = document.getElementById("noBtn");
 const yesBtn = document.getElementById("yesBtn");
 const claimBtn = document.getElementById("claimBtn");
+const restartBtn = document.getElementById("restartBtn");
 const tinyText = document.getElementById("tinyText");
 
 const screenQuestion = document.getElementById("screenQuestion");
 const screenYay = document.getElementById("screenYay");
 const screenRoses = document.getElementById("screenRoses");
 
-// -------------------- Behavior settings --------------------
+// -------------------- Settings --------------------
 const PADDING = 10;
 const BASE_RADIUS = 110;     // how close before No runs
 const SHRINK_STEP = 0.12;    // shrink per attempt
@@ -18,6 +19,7 @@ const SPEED_UP_AFTER = 6;
 
 let attempts = 0;
 let scale = 1;
+let yesBoosted = false;
 
 // -------------------- Helpers --------------------
 function clamp(v, min, max){ return Math.max(min, Math.min(max, v)); }
@@ -53,8 +55,14 @@ function attemptNo(){
   setNoScale(scale - SHRINK_STEP);
   randomizeNoPosition();
 
-  const face = attempts >= SPEED_UP_AFTER ? "👿👿" : "👿";
-  tinyText.textContent = `No seems a little bit shy ${face} (${attempts})`;
+  // Keep hint exactly as requested (one emoji, no counter)
+  tinyText.textContent = `No seems a little bit shy 👿`;
+
+  // Boost YES only once
+  if (!yesBoosted) {
+    yesBoosted = true;
+    yesBtn.classList.add("boost");
+  }
 }
 
 function flee(pointerX, pointerY){
@@ -91,23 +99,42 @@ function flee(pointerX, pointerY){
   noBtn.style.top  = `${newTop}px`;
 }
 
+// -------------------- Reset / Start Over --------------------
+function resetToStart(){
+  // Screens
+  screenRoses.hidden = true;
+  screenYay.hidden = true;
+  screenQuestion.hidden = false;
+
+  // Reset No button behavior
+  attempts = 0;
+  scale = 1;
+  setNoScale(1);
+  randomizeNoPosition();
+
+  // Reset hint + YES boost
+  tinyText.textContent = `No seems a little bit shy 👿`;
+  yesBoosted = false;
+  yesBtn.classList.remove("boost");
+}
+
 // -------------------- Init --------------------
 noBtn.style.position = "absolute";
 noBtn.setAttribute("tabindex", "-1");
 setNoScale(1);
 randomizeNoPosition();
 
-// Keep it responsive on Fold / rotation
+// Handle Fold / rotation resize
 window.addEventListener("resize", () => randomizeNoPosition(), { passive:true });
 
 // Desktop: move away when mouse comes close
 area.addEventListener("mousemove", (e) => flee(e.clientX, e.clientY));
 
-// Desktop: count attempt if hovered or clicked
+// Desktop: count attempt if hovered/clicked
 noBtn.addEventListener("mouseenter", () => attemptNo());
 noBtn.addEventListener("click", (e) => { e.preventDefault(); attemptNo(); });
 
-// Mobile: move away when finger moves in the area
+// Mobile: move away when finger moves near
 area.addEventListener("touchmove", (e) => {
   const t = e.touches && e.touches[0];
   if (!t) return;
@@ -138,3 +165,8 @@ claimBtn.addEventListener("click", () => {
   screenYay.hidden = true;
   screenRoses.hidden = false;
 });
+
+restartBtn.addEventListener("click", () => {
+  resetToStart();
+});
+
